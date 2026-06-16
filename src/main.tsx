@@ -1,218 +1,286 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { seaLogo } from './assets/seaLogo';
 import { seaSecondaryLogo } from './assets/seaSecondaryLogo';
 import './styles.css';
 
+/* ── Types ────────────────────────────────────────── */
 type PageKey =
-  | 'welcome'
-  | 'overview'
-  | 'ponds'
-  | 'feeding'
-  | 'applications'
-  | 'water'
-  | 'growth'
-  | 'inventory'
-  | 'insights'
-  | 'reports'
-  | 'admin';
+  | 'welcome' | 'overview' | 'ponds' | 'feeding'
+  | 'applications' | 'water' | 'growth' | 'inventory'
+  | 'insights' | 'reports' | 'admin';
 
-type NavItem = {
+interface NavItem {
   key: PageKey;
   label: string;
   icon: string;
   description: string;
-};
+  section: string;
+}
 
+/* ── Nav Config ───────────────────────────────────── */
 const navItems: NavItem[] = [
-  { key: 'welcome',      label: 'Home',                icon: '🏠', description: 'Business overview and priorities' },
-  { key: 'overview',     label: 'Operations Overview', icon: '📊', description: 'Executive view of farm performance' },
-  { key: 'ponds',        label: 'Pond Portfolio',      icon: '🌊', description: 'Pond status, crop cycles and ownership' },
-  { key: 'feeding',      label: 'Feed Operations',     icon: '🧾', description: 'Feed plans, usage and consumption trends' },
-  { key: 'applications', label: 'Treatments & Inputs', icon: '🧪', description: 'Minerals, probiotics and pond applications' },
-  { key: 'water',        label: 'Water Quality',       icon: '💧', description: 'Water parameters, alerts and trend monitoring' },
-  { key: 'growth',       label: 'Growth & Sampling',   icon: '⚖️', description: 'Biomass, survival, growth and harvest readiness' },
-  { key: 'inventory',    label: 'Inventory Control',   icon: '📦', description: 'Stock visibility and input availability' },
-  { key: 'insights',     label: 'Insights Centre',     icon: '✨', description: 'Operational recommendations and summaries' },
-  { key: 'reports',      label: 'Management Reports',  icon: '📑', description: 'Business reports and audit-ready records' },
-  { key: 'admin',        label: 'Administration',      icon: '⚙️', description: 'Users, access and business configuration' },
+  { key: 'welcome',      label: 'Home',                icon: '🏠', description: 'Farm overview',              section: '' },
+  { key: 'overview',     label: 'Operations',          icon: '📊', description: 'Live farm performance',      section: 'Operations' },
+  { key: 'ponds',        label: 'Pond Portfolio',      icon: '🌊', description: 'Crops & pond status',        section: 'Operations' },
+  { key: 'feeding',      label: 'Feed Operations',     icon: '🧾', description: 'Plans, usage & trends',      section: 'Operations' },
+  { key: 'applications', label: 'Treatments',          icon: '🧪', description: 'Minerals & probiotics',      section: 'Operations' },
+  { key: 'water',        label: 'Water Quality',       icon: '💧', description: 'Parameters & alerts',        section: 'Monitoring' },
+  { key: 'growth',       label: 'Growth & Sampling',   icon: '⚖️', description: 'Biomass & harvest readiness', section: 'Monitoring' },
+  { key: 'inventory',    label: 'Inventory',           icon: '📦', description: 'Stock & inputs',             section: 'Management' },
+  { key: 'insights',     label: 'Insights',            icon: '✨', description: 'AI recommendations',         section: 'Management' },
+  { key: 'reports',      label: 'Reports',             icon: '📑', description: 'Business & audit records',   section: 'Management' },
+  { key: 'admin',        label: 'Administration',      icon: '⚙️', description: 'Users & configuration',      section: 'System' },
+];
+
+const kpis = [
+  { label: 'Active Ponds',    value: '5',      sub: 'T1 – T5 biofloc',       badge: 'Operational',  badgeType: 'green', icon: '🌊' },
+  { label: 'Farm Footprint',  value: '34 ac',  sub: 'Nidadavolu, W. Godavari', badge: 'L. vannamei', badgeType: 'blue',  icon: '📍' },
+  { label: 'Cycle Stage',     value: 'DOC 42', sub: 'Current crop cycle',    badge: 'Active',       badgeType: 'green', icon: '📅' },
+  { label: 'Today\'s Track',  value: 'Daily',  sub: 'Feed · Water · Growth', badge: 'Live sync',   badgeType: 'blue',  icon: '📋' },
 ];
 
 const priorities = [
-  { title: 'Operational Control',    text: 'Maintain a single view of pond activity, daily inputs, water condition and crop progress.' },
-  { title: 'Management Visibility',  text: 'Give farm owners and managers clear visibility of performance, risks and pending actions.' },
-  { title: 'Audit-Ready Records',    text: 'Standardise daily records so decisions are traceable, consistent and easy to review.' },
+  { icon: '🎯', title: 'Operational Control',   body: 'Single view of pond activity, daily inputs, water condition and crop progress across all biofloc tanks.' },
+  { icon: '📈', title: 'Management Visibility', body: 'Farm owners and managers get clear visibility of performance, risks and pending actions in real time.' },
+  { icon: '📂', title: 'Audit-Ready Records',   body: 'Standardised daily records ensure decisions are traceable, consistent and ready for review or certification.' },
 ];
 
-function App() {
-  const [activePage, setActivePage] = useState<PageKey>('welcome');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const activeItem = useMemo(
-    () => navItems.find((item) => item.key === activePage) ?? navItems[0],
-    [activePage],
-  );
+/* ── Date helper ──────────────────────────────────── */
+function formatDate() {
+  return new Date().toLocaleDateString('en-SG', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+/* ── App ──────────────────────────────────────────── */
+export default function App() {
+  const [active, setActive] = useState<PageKey>('welcome');
+  const [open, setOpen] = useState(false);
+  const activeItem = useMemo(() => navItems.find(n => n.key === active)!, [active]);
+
+  // Group navItems by section
+  const sections = useMemo(() => {
+    const map = new Map<string, NavItem[]>();
+    navItems.forEach(item => {
+      const s = item.section;
+      if (!map.has(s)) map.set(s, []);
+      map.get(s)!.push(item);
+    });
+    return map;
+  }, []);
 
   const navigate = (key: PageKey) => {
-    setActivePage(key);
-    // auto-close sidebar on mobile after nav
-    if (window.innerWidth <= 900) setSidebarOpen(false);
+    setActive(key);
+    if (window.innerWidth <= 768) setOpen(false);
   };
 
+  // Close sidebar on outside click (mobile)
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (open && window.innerWidth <= 768) {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar && !sidebar.contains(e.target as Node)) setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [open]);
+
   return (
-    <div className={sidebarOpen ? 'appShell sidebarExpanded' : 'appShell'}>
+    <div className={open ? 'appShell sidebarExpanded' : 'appShell'}>
 
       {/* ── Sidebar ── */}
       <aside className="sidebar" aria-label="SEA Farms navigation">
 
-        {/* Collapsed state: circular logo badge acts as toggle */}
+        {/* Top / Logo */}
         <div className="sidebarTop">
-          <button
-            className="logoToggleButton"
-            type="button"
-            aria-label="Expand sidebar"
-            onClick={() => setSidebarOpen(true)}
-            title="Expand menu"
-          >
-            <img className="brandLogoCompact" src={seaSecondaryLogo} alt="SEA Farms" />
-          </button>
-        </div>
-
-        {/* Expanded state: full logo + collapse button */}
-        <div className="brandPanel">
-          <div className="brandLogoFull">
-            <img src={seaLogo} alt="SEA Farms" />
+          {/* Collapsed: circular badge */}
+          <div className="logoCollapsed">
+            <button
+              className="logoCollapsedBtn"
+              onClick={() => setOpen(true)}
+              title="Expand menu"
+              aria-label="Expand navigation"
+            >
+              <img src={seaSecondaryLogo} alt="SEA Farms" />
+            </button>
           </div>
-          <button
-            className="sidebarToggle"
-            type="button"
-            aria-label="Collapse sidebar"
-            onClick={() => setSidebarOpen(false)}
-            title="Collapse menu"
-          >
-            ‹
-          </button>
+
+          {/* Expanded: full wordmark + collapse */}
+          <div className="logoExpanded">
+            <div className="logoFullWrap">
+              <img src={seaLogo} alt="SEA Farms" />
+            </div>
+            <button
+              className="collapseBtn"
+              onClick={() => setOpen(false)}
+              title="Collapse menu"
+              aria-label="Collapse navigation"
+            >
+              ‹
+            </button>
+          </div>
         </div>
 
         {/* Navigation */}
         <nav className="sideNav" aria-label="Main navigation">
-          {navItems.map((item) => (
-            <button
-              key={item.key}
-              className={item.key === activePage ? 'navItem active' : 'navItem'}
-              onClick={() => navigate(item.key)}
-              title={!sidebarOpen ? item.label : undefined}
-              type="button"
-            >
-              <span className="navIcon" aria-hidden="true">{item.icon}</span>
-              <span className="navText">
-                <strong>{item.label}</strong>
-                <small>{item.description}</small>
-              </span>
-            </button>
+          {Array.from(sections.entries()).map(([section, items]) => (
+            <React.Fragment key={section}>
+              {section && <div className="navSection">{section}</div>}
+              {items.map(item => (
+                <button
+                  key={item.key}
+                  className={item.key === active ? 'navItem active' : 'navItem'}
+                  onClick={() => navigate(item.key)}
+                  title={!open ? item.label : undefined}
+                  type="button"
+                  aria-current={item.key === active ? 'page' : undefined}
+                >
+                  <span className="navIcon" aria-hidden="true">{item.icon}</span>
+                  <span className="navLabel">
+                    <strong>{item.label}</strong>
+                    <small>{item.description}</small>
+                  </span>
+                </button>
+              ))}
+            </React.Fragment>
           ))}
         </nav>
 
-        {/* Footer tag */}
+        {/* Footer */}
         <div className="sidebarFooter">
-          <span>Business Focus</span>
-          <strong>Precision Aquaculture · Sustainable Results</strong>
+          <div className="sidebarFooterInner">
+            <div className="sidebarFooterDot" aria-hidden="true" />
+            <div className="sidebarFooterText">
+              <span>Systems Operational</span>
+              <small>Precision Aquaculture · Sustainable Results</small>
+            </div>
+          </div>
         </div>
       </aside>
 
-      {/* ── Main Content ── */}
-      <main className="contentArea">
+      {/* ── Main ── */}
+      <div className="contentArea">
+        {/* Top bar */}
         <header className="topBar">
-          <div className="topBarTitle">
-            <p className="eyebrow">SEA Farms Operations</p>
-            <h1>
-              {activePage === 'welcome'
-                ? 'Aquaculture Command Centre'
-                : activeItem.label}
-            </h1>
+          <div className="topBarLeft">
+            <div className="topBarEyebrow">SEA Farms Operations</div>
+            <div className="topBarTitle">
+              {active === 'welcome' ? 'Aquaculture Command Centre' : activeItem.label}
+            </div>
           </div>
-          <div className="topBarActions">
+          <div className="topBarRight">
+            <span className="topBarDate">{formatDate()}</span>
+            <div className="topBarPill">
+              <div className="topBarPillDot" />
+              All Systems Live
+            </div>
             <button
-              className="mobileMenuButton"
-              type="button"
-              aria-label="Open menu"
-              onClick={() => setSidebarOpen((o) => !o)}
+              className="mobileMenuBtn"
+              onClick={() => setOpen(o => !o)}
+              aria-label="Toggle menu"
+              aria-expanded={open}
             >
               ☰
             </button>
-            <div className="statusPill">🟢 Live</div>
           </div>
         </header>
 
-        {activePage === 'welcome'
-          ? <WelcomePage onNavigate={navigate} />
-          : <PlaceholderPage item={activeItem} />}
-      </main>
+        {/* Page */}
+        <main className="pageContent">
+          {active === 'welcome'
+            ? <WelcomePage onNavigate={navigate} />
+            : <PlaceholderPage item={activeItem} />
+          }
+        </main>
+      </div>
     </div>
   );
 }
 
+/* ── Welcome Page ─────────────────────────────────── */
 function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
   return (
     <>
-      <section className="heroCard">
+      {/* Hero */}
+      <div className="heroBlock">
         <div className="heroCopy">
-          <img className="heroLogo" src={seaLogo} alt="SEA Farms" />
-          <span className="sectionLabel">Commercial aquaculture management</span>
-          <h2>Operate every pond with clarity, discipline and real-time visibility.</h2>
-          <p>
-            SEA Farms brings daily farm operations into a structured business platform — covering
-            pond activity, feeding, applications, water quality, growth tracking, inventory and
-            management reporting.
+          <img className="heroLogoImg" src={seaLogo} alt="SEA Farms" />
+          <div className="heroEyebrow">Commercial Aquaculture Management</div>
+          <h2 className="heroHeadline">
+            Operate every pond with <em>clarity</em> and real-time control.
+          </h2>
+          <p className="heroBody">
+            SEA Farms brings daily farm operations into one structured platform — pond activity,
+            feeding, treatments, water quality, growth tracking and management reporting, all in one place.
           </p>
           <div className="heroActions">
-            <button type="button" onClick={() => onNavigate('overview')}>
-              Open Operations Overview →
+            <button className="btnPrimary" onClick={() => onNavigate('overview')}>
+              Open Operations →
             </button>
-            <button type="button" className="ghostButton" onClick={() => onNavigate('ponds')}>
+            <button className="btnGhost" onClick={() => onNavigate('ponds')}>
               View Pond Portfolio
             </button>
           </div>
         </div>
-        <div className="summaryPanel">
-          <span>Operating Model</span>
-          <strong>Clear records. Faster decisions. Better crop control.</strong>
-          <small>Designed for commercial vannamei shrimp farm operations in Nidadavolu, West Godavari.</small>
+        <div className="heroPanel">
+          <div className="heroPanelWave" aria-hidden="true" />
+          <div className="heroPanelBadge">
+            <img src={seaSecondaryLogo} alt="" aria-hidden="true" />
+          </div>
+          <div className="heroPanelTag">Nidadavolu · West Godavari · AP</div>
+          <div className="heroPanelTitle">
+            Freshwater L. vannamei<br />Biofloc System
+          </div>
+          <div className="heroPanelSub">
+            5 pond tanks · Precision aquaculture · Sustainable results
+          </div>
         </div>
-      </section>
+      </div>
 
-      <section className="metricGrid">
-        <div className="metricCard"><span>12</span><small>Active Ponds</small></div>
-        <div className="metricCard"><span>34 ac</span><small>Farm Footprint</small></div>
-        <div className="metricCard"><span>Daily</span><small>Operations Tracking</small></div>
-        <div className="metricCard"><span>360°</span><small>Management View</small></div>
-      </section>
-
-      <section className="cards">
-        {priorities.map((item) => (
-          <article className="card" key={item.title}>
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
-          </article>
+      {/* KPIs */}
+      <div className="kpiRow">
+        {kpis.map(k => (
+          <div className="kpiCard" key={k.label}>
+            <div className="kpiIcon" aria-hidden="true">{k.icon}</div>
+            <div className="kpiLabel">{k.label}</div>
+            <div className="kpiValue">{k.value}</div>
+            <div className="kpiSub">{k.sub}</div>
+            <div className={`kpiBadge ${k.badgeType}`}>{k.badge}</div>
+          </div>
         ))}
-      </section>
+      </div>
+
+      {/* Priority Cards */}
+      <div className="cardGrid">
+        {priorities.map(p => (
+          <div className="card" key={p.title}>
+            <div className="cardIcon" aria-hidden="true">{p.icon}</div>
+            <div className="cardTitle">{p.title}</div>
+            <div className="cardBody">{p.body}</div>
+          </div>
+        ))}
+      </div>
     </>
   );
 }
 
+/* ── Placeholder Page ─────────────────────────────── */
 function PlaceholderPage({ item }: { item: NavItem }) {
   return (
-    <section className="placeholderPage">
-      <div className="placeholderIcon" aria-hidden="true">{item.icon}</div>
-      <h2>{item.label}</h2>
-      <p>{item.description}</p>
-      <div className="placeholderBox">
-        <strong>Module scope</strong>
-        <span>
-          This section will provide structured workflows, record capture, approvals, insights and
-          management-ready views for the selected business area.
-        </span>
+    <div className="placeholderWrap">
+      <div className="placeholderInner">
+        <div className="placeholderBadge" aria-hidden="true">{item.icon}</div>
+        <h2>{item.label}</h2>
+        <p>{item.description} — this module is being built out as part of the SEA Farms platform.</p>
+        <div className="placeholderBox">
+          <strong>Coming next</strong>
+          <span>
+            Structured workflows, record capture, approvals, AI insights and management-ready views
+            for this business area will be available in the next release.
+          </span>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 
