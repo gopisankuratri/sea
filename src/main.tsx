@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
   { key: 'overview',     label: 'Operations',          icon: '📊', description: 'Farm performance view',        section: 'Operations' },
   { key: 'ponds',        label: 'Pond Portfolio',      icon: '🌊', description: 'Crop cycles and pond status',  section: 'Operations' },
   { key: 'feeding',      label: 'Feed Operations',     icon: '🧾', description: 'Feed plans, usage and trends', section: 'Operations' },
-  { key: 'pondLog',      label: 'Pond Log',            icon: '📝', description: 'Open pond log assistant',      section: 'Operations' },
+  { key: 'pondLog',      label: 'Pond Log',            icon: '📝', description: 'Open pond log AI assistant',      section: 'Operations' },
   { key: 'applications', label: 'Treatments',          icon: '🧪', description: 'Minerals and probiotics',      section: 'Operations' },
   { key: 'water',        label: 'Water Quality',       icon: '💧', description: 'Parameters and alerts',        section: 'Monitoring' },
   { key: 'growth',       label: 'Growth & Sampling',   icon: '⚖️', description: 'Biomass and harvest readiness', section: 'Monitoring' },
