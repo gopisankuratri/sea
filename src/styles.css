@@ -38,52 +38,34 @@ button { font: inherit; }
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.logoMark {
-  width: 74px;
-  height: 54px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.brandLogo {
+  width: 118px;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 8px;
+  object-fit: contain;
+}
+
+.heroLogo {
+  width: min(360px, 100%);
+  height: auto;
+  display: block;
+  margin-bottom: 22px;
   border-radius: 18px;
   background: #ffffff;
-  overflow: hidden;
+  padding: 12px;
+  box-shadow: 0 14px 36px rgba(7, 48, 74, 0.08);
 }
 
-.logoSea {
-  color: #041f46;
-  font-size: 24px;
-  font-weight: 950;
-  letter-spacing: -0.08em;
-}
-
-.logoWave {
-  position: absolute;
-  width: 66px;
-  height: 13px;
-  right: 3px;
-  bottom: 9px;
-  border-radius: 100%;
-  background: linear-gradient(90deg, #00a9b5, #16c7c9);
-  transform: rotate(-7deg);
-}
-
-.logoWave::after {
-  content: "";
-  position: absolute;
-  inset: 4px 0 auto 8px;
-  height: 5px;
-  border-radius: 999px;
-  background: #ffffff;
-}
-
-.brandPanel strong {
+.brandText strong {
   display: block;
   font-size: 18px;
   letter-spacing: 0.02em;
 }
 
-.brandPanel small {
+.brandText small {
   color: rgba(255, 255, 255, 0.68);
 }
 
