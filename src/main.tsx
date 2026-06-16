@@ -235,7 +235,6 @@ function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
       {/* Hero */}
       <div className="heroBlock">
         <div className="heroCopy">
-          <img className="heroLogoImg" src={seaLogo} alt="SEA Farms" />
           <div className="heroEyebrow">Commercial Aquaculture Management</div>
           <h2 className="heroHeadline">
             Operate every pond with <em>clarity</em> and disciplined control.
