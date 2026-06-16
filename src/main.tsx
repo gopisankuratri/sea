@@ -79,6 +79,115 @@ const sidebarAlignmentOverrides = `
   }
 `;
 
+const homePageStyles = `
+  .heroBlock {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .heroBlock::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 6% 12%, rgba(18, 196, 207, 0.16), transparent 92px),
+      radial-gradient(circle at 70% 10%, rgba(18, 196, 207, 0.12), transparent 54px),
+      radial-gradient(circle at 65% 55%, rgba(18, 196, 207, 0.10), transparent 46px),
+      linear-gradient(160deg, rgba(255,255,255,0) 0%, rgba(231, 251, 253, 0.72) 100%);
+    z-index: -2;
+  }
+
+  .heroBlock::after {
+    content: '';
+    position: absolute;
+    left: -6%;
+    right: 26%;
+    bottom: -70px;
+    height: 190px;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 18% 70%, rgba(18,196,207,0.18), transparent 110px),
+      linear-gradient(165deg, transparent 32%, rgba(18,196,207,0.10) 34%, rgba(18,196,207,0.22) 55%, rgba(255,255,255,0.08) 56%, transparent 70%);
+    border-radius: 50% 50% 0 0;
+    transform: rotate(-3deg);
+    z-index: -1;
+  }
+
+  .heroCopy {
+    position: relative;
+  }
+
+  .heroCopy::before,
+  .heroCopy::after,
+  .heroPanel::before,
+  .heroPanel::after {
+    content: '';
+    position: absolute;
+    border-radius: 999px;
+    border: 1px solid rgba(18,196,207,0.26);
+    background: radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95), rgba(18,196,207,0.13) 52%, rgba(255,255,255,0.02));
+    box-shadow: inset 0 0 12px rgba(255,255,255,0.86), 0 10px 30px rgba(18,196,207,0.12);
+    pointer-events: none;
+  }
+
+  .heroCopy::before {
+    width: 82px;
+    height: 82px;
+    top: -18px;
+    left: -26px;
+  }
+
+  .heroCopy::after {
+    width: 34px;
+    height: 34px;
+    right: 32px;
+    top: 42px;
+  }
+
+  .heroPanel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .heroPanel::before {
+    width: 48px;
+    height: 48px;
+    right: 28px;
+    top: 50%;
+    opacity: 0.85;
+  }
+
+  .heroPanel::after {
+    width: 86px;
+    height: 86px;
+    right: -18px;
+    bottom: 26px;
+    opacity: 0.7;
+  }
+
+  .heroPanelWave {
+    opacity: 0.72;
+  }
+
+  .heroHeadline em {
+    text-shadow: 0 0 28px rgba(18,196,207,0.22);
+  }
+
+  @media (max-width: 980px) {
+    .heroBlock::after {
+      right: -8%;
+    }
+    .heroCopy::before,
+    .heroCopy::after,
+    .heroPanel::before,
+    .heroPanel::after {
+      display: none;
+    }
+  }
+`;
+
 const pondLogPageStyles = `
   .pondLogPage {
     display: grid;
@@ -368,7 +477,6 @@ export default function App() {
   const [open, setOpen] = useState(false);
   const activeItem = useMemo(() => navItems.find(n => n.key === active)!, [active]);
 
-  // Group navItems by section
   const sections = useMemo(() => {
     const map = new Map<string, NavItem[]>();
     navItems.forEach(item => {
@@ -384,7 +492,6 @@ export default function App() {
     if (window.innerWidth <= 768) setOpen(false);
   };
 
-  // Close sidebar on outside click (mobile)
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (open && window.innerWidth <= 768) {
@@ -399,14 +506,11 @@ export default function App() {
   return (
     <div className={open ? 'appShell sidebarExpanded' : 'appShell'}>
       <style>{sidebarAlignmentOverrides}</style>
+      <style>{homePageStyles}</style>
       <style>{pondLogPageStyles}</style>
 
-      {/* ── Sidebar ── */}
       <aside className="sidebar" aria-label="SEA Farms navigation">
-
-        {/* Top / Logo */}
         <div className="sidebarTop">
-          {/* Collapsed: circular badge */}
           <div className="logoCollapsed">
             <button
               className="logoCollapsedBtn"
@@ -418,7 +522,6 @@ export default function App() {
             </button>
           </div>
 
-          {/* Expanded: full wordmark + collapse */}
           <div className="logoExpanded">
             <div className="logoFullWrap">
               <img src={seaLogo} alt="SEA Farms" />
@@ -434,7 +537,6 @@ export default function App() {
           </div>
         </div>
 
-        {/* Navigation */}
         <nav className="sideNav" aria-label="Main navigation">
           {Array.from(sections.entries()).map(([section, items]) => (
             <React.Fragment key={section}>
@@ -459,7 +561,6 @@ export default function App() {
           ))}
         </nav>
 
-        {/* Footer */}
         <div className="sidebarFooter">
           <div className="sidebarFooterInner">
             <div className="sidebarFooterDot" aria-hidden="true" />
@@ -471,9 +572,7 @@ export default function App() {
         </div>
       </aside>
 
-      {/* ── Main ── */}
       <div className="contentArea">
-        {/* Top bar */}
         <header className="topBar">
           <div className="topBarLeft">
             <div className="topBarEyebrow">SEA Farms Operations</div>
@@ -498,7 +597,6 @@ export default function App() {
           </div>
         </header>
 
-        {/* Page */}
         <main className="pageContent">
           {active === 'welcome'
             ? <WelcomePage onNavigate={navigate} />
@@ -516,7 +614,6 @@ export default function App() {
 function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
   return (
     <>
-      {/* Hero */}
       <div className="heroBlock">
         <div className="heroCopy">
           <div className="heroEyebrow">Commercial Aquaculture Management</div>
@@ -551,7 +648,6 @@ function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
         </div>
       </div>
 
-      {/* KPIs */}
       <div className="kpiRow">
         {kpis.map(k => (
           <div className="kpiCard" key={k.label}>
@@ -564,7 +660,6 @@ function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
         ))}
       </div>
 
-      {/* Priority Cards */}
       <div className="cardGrid">
         {priorities.map(p => (
           <div className="card" key={p.title}>
