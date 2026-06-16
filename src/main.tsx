@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { seaLogo } from './assets/seaLogo';
 import './styles.css';
 
 type PageKey =
@@ -50,11 +51,8 @@ function App() {
     <div className="appShell">
       <aside className="sidebar">
         <div className="brandPanel">
-          <div className="logoMark">
-            <span className="logoSea">SEA</span>
-            <span className="logoWave" />
-          </div>
-          <div>
+          <img className="brandLogo" src={seaLogo} alt="SEA Farms" />
+          <div className="brandText">
             <strong>SEA Farms</strong>
             <small>Precision Aquaculture</small>
           </div>
@@ -103,6 +101,7 @@ function WelcomePage() {
     <>
       <section className="heroCard">
         <div className="heroCopy">
+          <img className="heroLogo" src={seaLogo} alt="SEA Farms" />
           <span className="sectionLabel">Modern farm operations platform</span>
           <h2>Manage pond records, feed logs, application logs and farm insights from one place.</h2>
           <p>
