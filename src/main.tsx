@@ -34,10 +34,10 @@ const navItems: NavItem[] = [
 ];
 
 const kpis = [
-  { label: 'Pond Portfolio',    value: '12',     sub: 'Commercial freshwater ponds', badge: 'Farm asset',       badgeType: 'green', icon: '🌊' },
-  { label: 'Farm Footprint',    value: '34 ac',  sub: 'Nidadavolu, Andhra Pradesh',  badge: 'Operational area', badgeType: 'blue',  icon: '📍' },
-  { label: 'Culture System',    value: 'Vannamei', sub: 'Freshwater shrimp farming', badge: 'Core crop',        badgeType: 'green', icon: '🦐' },
-  { label: 'Records Focus',     value: 'Daily',  sub: 'Feed · Water · Growth',       badge: 'Traceable',        badgeType: 'blue',  icon: '📋' },
+  { label: 'Active Ponds',      value: '12',       sub: 'P1 to P12',                   badge: 'Operational', badgeType: 'green', icon: '🌊' },
+  { label: 'Farm Footprint',    value: '34 acres', sub: 'Nidadavolu, E. Godavari',     badge: 'L. vannamei', badgeType: 'blue',  icon: '📍' },
+  { label: 'Culture System',    value: 'Freshwater', sub: 'Earthen pond culture',      badge: 'Commercial',  badgeType: 'green', icon: '🦐' },
+  { label: 'Operations Tracking', value: 'Daily',  sub: 'Feed · Water · Growth',       badge: 'Traceable',   badgeType: 'blue',  icon: '📋' },
 ];
 
 const priorities = [
@@ -45,6 +45,36 @@ const priorities = [
   { icon: '📈', title: 'Management Visibility', body: 'Provide farm owners and managers with clear visibility of performance, risks and pending actions.' },
   { icon: '📂', title: 'Audit-Ready Records',   body: 'Standardise daily records so operational decisions are traceable, consistent and ready for review.' },
 ];
+
+const sidebarAlignmentOverrides = `
+  .sidebarExpanded .navItem {
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+
+  .sidebarExpanded .navLabel {
+    align-items: flex-start !important;
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .sidebarExpanded .navLabel strong,
+  .sidebarExpanded .navLabel small {
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .sidebarExpanded .navSection {
+    text-align: left !important;
+  }
+
+  .sidebarExpanded .sidebarFooterText,
+  .sidebarExpanded .sidebarFooterText span,
+  .sidebarExpanded .sidebarFooterText small {
+    text-align: left !important;
+  }
+`;
 
 /* ── Date helper ──────────────────────────────────── */
 function formatDate() {
@@ -87,6 +117,7 @@ export default function App() {
 
   return (
     <div className={open ? 'appShell sidebarExpanded' : 'appShell'}>
+      <style>{sidebarAlignmentOverrides}</style>
 
       {/* ── Sidebar ── */}
       <aside className="sidebar" aria-label="SEA Farms navigation">
@@ -227,12 +258,12 @@ function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
           <div className="heroPanelBadge">
             <img src={seaSecondaryLogo} alt="" aria-hidden="true" />
           </div>
-          <div className="heroPanelTag">Nidadavolu · Andhra Pradesh</div>
+          <div className="heroPanelTag">Nidadavolu · E. Godavari</div>
           <div className="heroPanelTitle">
             Freshwater Vannamei<br />Farm Operations
           </div>
           <div className="heroPanelSub">
-            12 ponds · 34 acres · Precision aquaculture · Sustainable results
+            P1 to P12 · 34 acres · Precision aquaculture · Sustainable results
           </div>
         </div>
       </div>
