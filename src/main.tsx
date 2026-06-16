@@ -6,7 +6,7 @@ import './styles.css';
 
 /* ── Types ────────────────────────────────────────── */
 type PageKey =
-  | 'welcome' | 'overview' | 'ponds' | 'feeding'
+  | 'welcome' | 'overview' | 'ponds' | 'feeding' | 'pondLog'
   | 'applications' | 'water' | 'growth' | 'inventory'
   | 'insights' | 'reports' | 'admin';
 
@@ -24,6 +24,7 @@ const navItems: NavItem[] = [
   { key: 'overview',     label: 'Operations',          icon: '📊', description: 'Farm performance view',        section: 'Operations' },
   { key: 'ponds',        label: 'Pond Portfolio',      icon: '🌊', description: 'Crop cycles and pond status',  section: 'Operations' },
   { key: 'feeding',      label: 'Feed Operations',     icon: '🧾', description: 'Feed plans, usage and trends', section: 'Operations' },
+  { key: 'pondLog',      label: 'Pond Log',            icon: '📝', description: 'Open pond log assistant',      section: 'Operations' },
   { key: 'applications', label: 'Treatments',          icon: '🧪', description: 'Minerals and probiotics',      section: 'Operations' },
   { key: 'water',        label: 'Water Quality',       icon: '💧', description: 'Parameters and alerts',        section: 'Monitoring' },
   { key: 'growth',       label: 'Growth & Sampling',   icon: '⚖️', description: 'Biomass and harvest readiness', section: 'Monitoring' },
@@ -45,6 +46,8 @@ const priorities = [
   { icon: '📈', title: 'Management Visibility', body: 'Provide farm owners and managers with clear visibility of performance, risks and pending actions.' },
   { icon: '📂', title: 'Audit-Ready Records',   body: 'Standardise daily records so operational decisions are traceable, consistent and ready for review.' },
 ];
+
+const pondLogAssistantUrl = 'https://chatgpt.com/g/g-6a2fb6e4464c8191abadc81b370e725e-shrimp-pond-log-assistant';
 
 const sidebarAlignmentOverrides = `
   .sidebarExpanded .navItem {
@@ -220,7 +223,9 @@ export default function App() {
         <main className="pageContent">
           {active === 'welcome'
             ? <WelcomePage onNavigate={navigate} />
-            : <PlaceholderPage item={activeItem} />
+            : active === 'pondLog'
+              ? <PondLogPage />
+              : <PlaceholderPage item={activeItem} />
           }
         </main>
       </div>
@@ -291,6 +296,30 @@ function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
         ))}
       </div>
     </>
+  );
+}
+
+/* ── Pond Log Page ────────────────────────────────── */
+function PondLogPage() {
+  return (
+    <div className="placeholderWrap">
+      <div className="placeholderInner">
+        <div className="placeholderBadge" aria-hidden="true">📝</div>
+        <h2>Pond Log Assistant</h2>
+        <p>Capture and process daily pond records using the SEA Farms pond log assistant.</p>
+        <div className="placeholderBox">
+          <strong>Assistant access</strong>
+          <span>
+            Open the pond log assistant to extract pond activities from daily notes or images and prepare clean operational records.
+          </span>
+        </div>
+        <div className="heroActions">
+          <a className="btnPrimary" href={pondLogAssistantUrl} target="_blank" rel="noreferrer">
+            Open Assistant →
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }
 
