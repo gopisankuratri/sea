@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { seaLogo } from './assets/seaLogo';
+import { seaSecondaryLogo } from './assets/seaSecondaryLogo';
 import './styles.css';
 
 type PageKey =
@@ -53,22 +54,25 @@ function App() {
       <aside className="sidebar" aria-label="SEA Farms sidebar">
         <div className="sidebarTop">
           <button
-            className="sidebarToggle"
+            className="logoToggleButton"
             type="button"
             aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
             onClick={() => setSidebarOpen((open) => !open)}
           >
-            ☰
+            <img className="brandLogoCompact" src={seaSecondaryLogo} alt="SEA Farms" />
           </button>
-          <img className="brandLogoCompact" src={seaLogo} alt="SEA Farms" />
         </div>
 
         <div className="brandPanel">
           <img className="brandLogo" src={seaLogo} alt="SEA Farms" />
-          <div className="brandText">
-            <strong>SEA Farms</strong>
-            <small>Precision Aquaculture</small>
-          </div>
+          <button
+            className="sidebarToggle"
+            type="button"
+            aria-label="Collapse sidebar"
+            onClick={() => setSidebarOpen(false)}
+          >
+            ←
+          </button>
         </div>
 
         <nav className="sideNav" aria-label="SEA Farms navigation">
