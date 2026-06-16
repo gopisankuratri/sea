@@ -16,10 +16,10 @@
   --teal-dim:      rgba(18,196,207,0.12);
   --teal-glow:     rgba(18,196,207,0.28);
 
-  --sidebar-bg:    #041630;
-  --sidebar-border:rgba(255,255,255,0.06);
-  --sidebar-hover: rgba(255,255,255,0.055);
-  --sidebar-active:rgba(18,196,207,0.13);
+  --sidebar-bg:    #ffffff;
+  --sidebar-border:#e8edf2;
+  --sidebar-hover: #f4f7fa;
+  --sidebar-active:#e9fbfc;
 
   --surface:       #ffffff;
   --bg:            #f0f4f8;
@@ -76,6 +76,7 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
   z-index: 200;
   transition: width var(--t);
   flex-shrink: 0;
+  border-right: 1px solid #e8edf2;
 }
 .sidebarExpanded .sidebar {
   width: var(--sidebar-open);
@@ -107,16 +108,17 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
 .logoCollapsedBtn {
   width: 40px; height: 40px;
   border-radius: 50%;
-  border: 1.5px solid var(--teal);
+  border: 1.5px solid #e2e8f0;
   overflow: hidden;
   padding: 0;
-  background: #fff;
-  box-shadow: 0 0 0 3px var(--teal-dim);
-  transition: box-shadow var(--t);
+  background: #f8fafc;
+  box-shadow: none;
+  transition: border-color var(--t), box-shadow var(--t);
   flex-shrink: 0;
 }
 .logoCollapsedBtn:hover {
-  box-shadow: 0 0 0 4px var(--teal-glow);
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-dim);
 }
 .logoCollapsedBtn img {
   width: 100%; height: 100%;
@@ -149,16 +151,17 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
 .collapseBtn {
   width: 30px; height: 30px;
   border-radius: 8px;
-  color: rgba(255,255,255,0.4);
-  background: rgba(255,255,255,0.06);
+  color: #94a3b8;
+  background: #f1f6f8;
   display: grid;
   place-items: center;
   font-size: 18px;
   transition: background var(--t), color var(--t);
   flex-shrink: 0;
   line-height: 1;
+  border: 1px solid #e2e8f0;
 }
-.collapseBtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.collapseBtn:hover { background: #e8edf3; color: #041f46; }
 
 /* Nav */
 .sideNav {
@@ -182,7 +185,7 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.25);
+  color: #b0bec8;
   white-space: nowrap;
   overflow: hidden;
   opacity: 0;
@@ -200,7 +203,7 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
   height: 44px;
   border-radius: 10px;
   padding: 0 10px;
-  color: rgba(255,255,255,0.5);
+  color: #64748b;
   background: transparent;
   display: flex;
   align-items: center;
@@ -211,11 +214,11 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
   transition: background var(--t), color var(--t);
 }
 .navItem:hover {
-  color: rgba(255,255,255,0.85);
+  color: #0f1c2e;
   background: var(--sidebar-hover);
 }
 .navItem.active {
-  color: #fff;
+  color: #041f46;
   background: var(--sidebar-active);
 }
 .navItem.active::after {
@@ -234,11 +237,11 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
   place-items: center;
   font-size: 17px;
   flex-shrink: 0;
-  background: rgba(255,255,255,0.05);
+  background: #f1f6f8;
   transition: background var(--t);
 }
-.navItem.active .navIcon { background: rgba(18,196,207,0.18); }
-.navItem:hover .navIcon  { background: rgba(255,255,255,0.08); }
+.navItem.active .navIcon { background: #d5f7fa; }
+.navItem:hover .navIcon  { background: #e8edf3; }
 
 .navLabel {
   display: flex;
@@ -254,13 +257,13 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
 }
 .navLabel small {
   font-size: 10.5px;
-  color: rgba(255,255,255,0.3);
+  color: #94a3b8;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: 1px;
   line-height: 1.3;
 }
-.navItem.active .navLabel small { color: rgba(255,255,255,0.45); }
+.navItem.active .navLabel small { color: #0a9fad; }
 
 /* Nav text hidden when collapsed */
 .navLabel, .navSection {
@@ -297,11 +300,11 @@ h1,h2,h3,h4 { font-weight: 700; line-height: 1.2; color: var(--navy); }
   display: block;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,0.55);
+  color: #475569;
 }
 .sidebarFooterText small {
   font-size: 10px;
-  color: rgba(255,255,255,0.25);
+  color: #94a3b8;
 }
 
 /* ── Content ─────────────────────────────────────── */
