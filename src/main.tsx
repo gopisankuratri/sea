@@ -45,11 +45,24 @@ const roadmap = [
 
 function App() {
   const [activePage, setActivePage] = useState<PageKey>('welcome');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const activeItem = useMemo(() => navItems.find((item) => item.key === activePage) ?? navItems[0], [activePage]);
 
   return (
-    <div className="appShell">
-      <aside className="sidebar">
+    <div className={sidebarOpen ? 'appShell sidebarExpanded' : 'appShell'}>
+      <aside className="sidebar" aria-label="SEA Farms sidebar">
+        <div className="sidebarTop">
+          <button
+            className="sidebarToggle"
+            type="button"
+            aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+            onClick={() => setSidebarOpen((open) => !open)}
+          >
+            ☰
+          </button>
+          <img className="brandLogoCompact" src={seaLogo} alt="SEA Farms" />
+        </div>
+
         <div className="brandPanel">
           <img className="brandLogo" src={seaLogo} alt="SEA Farms" />
           <div className="brandText">
@@ -64,10 +77,11 @@ function App() {
               key={item.key}
               className={item.key === activePage ? 'navItem active' : 'navItem'}
               onClick={() => setActivePage(item.key)}
+              title={item.label}
               type="button"
             >
               <span className="navIcon">{item.icon}</span>
-              <span>
+              <span className="navText">
                 <strong>{item.label}</strong>
                 <small>{item.description}</small>
               </span>
@@ -83,11 +97,16 @@ function App() {
 
       <main className="contentArea">
         <header className="topBar">
-          <div>
+          <div className="topBarTitle">
             <p className="eyebrow">SEA Farms Operations</p>
             <h1>{activePage === 'welcome' ? 'Welcome to SEA Farms' : activeItem.label}</h1>
           </div>
-          <div className="statusPill">Netlify Ready</div>
+          <div className="topBarActions">
+            <button className="mobileMenuButton" type="button" onClick={() => setSidebarOpen((open) => !open)}>
+              ☰
+            </button>
+            <div className="statusPill">Netlify Ready</div>
+          </div>
         </header>
 
         {activePage === 'welcome' ? <WelcomePage /> : <PlaceholderPage item={activeItem} />}
@@ -115,7 +134,7 @@ function WelcomePage() {
         </div>
         <div className="summaryPanel">
           <span>Phase 1</span>
-          <strong>Welcome Page + Sidebar</strong>
+          <strong>Corporate Web App Shell</strong>
           <small>React • TypeScript • Netlify</small>
         </div>
       </section>
