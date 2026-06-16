@@ -20,30 +20,30 @@ interface NavItem {
 
 /* ── Nav Config ───────────────────────────────────── */
 const navItems: NavItem[] = [
-  { key: 'welcome',      label: 'Home',                icon: '🏠', description: 'Farm overview',              section: '' },
-  { key: 'overview',     label: 'Operations',          icon: '📊', description: 'Live farm performance',      section: 'Operations' },
-  { key: 'ponds',        label: 'Pond Portfolio',      icon: '🌊', description: 'Crops & pond status',        section: 'Operations' },
-  { key: 'feeding',      label: 'Feed Operations',     icon: '🧾', description: 'Plans, usage & trends',      section: 'Operations' },
-  { key: 'applications', label: 'Treatments',          icon: '🧪', description: 'Minerals & probiotics',      section: 'Operations' },
-  { key: 'water',        label: 'Water Quality',       icon: '💧', description: 'Parameters & alerts',        section: 'Monitoring' },
-  { key: 'growth',       label: 'Growth & Sampling',   icon: '⚖️', description: 'Biomass & harvest readiness', section: 'Monitoring' },
-  { key: 'inventory',    label: 'Inventory',           icon: '📦', description: 'Stock & inputs',             section: 'Management' },
-  { key: 'insights',     label: 'Insights',            icon: '✨', description: 'AI recommendations',         section: 'Management' },
-  { key: 'reports',      label: 'Reports',             icon: '📑', description: 'Business & audit records',   section: 'Management' },
-  { key: 'admin',        label: 'Administration',      icon: '⚙️', description: 'Users & configuration',      section: 'System' },
+  { key: 'welcome',      label: 'Home',                icon: '🏠', description: 'Farm overview',                section: '' },
+  { key: 'overview',     label: 'Operations',          icon: '📊', description: 'Farm performance view',        section: 'Operations' },
+  { key: 'ponds',        label: 'Pond Portfolio',      icon: '🌊', description: 'Crop cycles and pond status',  section: 'Operations' },
+  { key: 'feeding',      label: 'Feed Operations',     icon: '🧾', description: 'Feed plans, usage and trends', section: 'Operations' },
+  { key: 'applications', label: 'Treatments',          icon: '🧪', description: 'Minerals and probiotics',      section: 'Operations' },
+  { key: 'water',        label: 'Water Quality',       icon: '💧', description: 'Parameters and alerts',        section: 'Monitoring' },
+  { key: 'growth',       label: 'Growth & Sampling',   icon: '⚖️', description: 'Biomass and harvest readiness', section: 'Monitoring' },
+  { key: 'inventory',    label: 'Inventory',           icon: '📦', description: 'Stock and input availability', section: 'Management' },
+  { key: 'insights',     label: 'Insights',            icon: '✨', description: 'Operational recommendations',  section: 'Management' },
+  { key: 'reports',      label: 'Reports',             icon: '📑', description: 'Business and audit records',   section: 'Management' },
+  { key: 'admin',        label: 'Administration',      icon: '⚙️', description: 'Users and access control',     section: 'System' },
 ];
 
 const kpis = [
-  { label: 'Active Ponds',    value: '5',      sub: 'T1 – T5 biofloc',       badge: 'Operational',  badgeType: 'green', icon: '🌊' },
-  { label: 'Farm Footprint',  value: '34 ac',  sub: 'Nidadavolu, W. Godavari', badge: 'L. vannamei', badgeType: 'blue',  icon: '📍' },
-  { label: 'Cycle Stage',     value: 'DOC 42', sub: 'Current crop cycle',    badge: 'Active',       badgeType: 'green', icon: '📅' },
-  { label: 'Today\'s Track',  value: 'Daily',  sub: 'Feed · Water · Growth', badge: 'Live sync',   badgeType: 'blue',  icon: '📋' },
+  { label: 'Pond Portfolio',    value: '12',     sub: 'Commercial freshwater ponds', badge: 'Farm asset',       badgeType: 'green', icon: '🌊' },
+  { label: 'Farm Footprint',    value: '34 ac',  sub: 'Nidadavolu, Andhra Pradesh',  badge: 'Operational area', badgeType: 'blue',  icon: '📍' },
+  { label: 'Culture System',    value: 'Vannamei', sub: 'Freshwater shrimp farming', badge: 'Core crop',        badgeType: 'green', icon: '🦐' },
+  { label: 'Records Focus',     value: 'Daily',  sub: 'Feed · Water · Growth',       badge: 'Traceable',        badgeType: 'blue',  icon: '📋' },
 ];
 
 const priorities = [
-  { icon: '🎯', title: 'Operational Control',   body: 'Single view of pond activity, daily inputs, water condition and crop progress across all biofloc tanks.' },
-  { icon: '📈', title: 'Management Visibility', body: 'Farm owners and managers get clear visibility of performance, risks and pending actions in real time.' },
-  { icon: '📂', title: 'Audit-Ready Records',   body: 'Standardised daily records ensure decisions are traceable, consistent and ready for review or certification.' },
+  { icon: '🎯', title: 'Operational Control',   body: 'Maintain one reliable view of pond activity, daily inputs, water condition and crop progress across the farm.' },
+  { icon: '📈', title: 'Management Visibility', body: 'Provide farm owners and managers with clear visibility of performance, risks and pending actions.' },
+  { icon: '📂', title: 'Audit-Ready Records',   body: 'Standardise daily records so operational decisions are traceable, consistent and ready for review.' },
 ];
 
 /* ── Date helper ──────────────────────────────────── */
@@ -151,7 +151,7 @@ export default function App() {
           <div className="sidebarFooterInner">
             <div className="sidebarFooterDot" aria-hidden="true" />
             <div className="sidebarFooterText">
-              <span>Systems Operational</span>
+              <span>Operations Workspace</span>
               <small>Precision Aquaculture · Sustainable Results</small>
             </div>
           </div>
@@ -165,14 +165,14 @@ export default function App() {
           <div className="topBarLeft">
             <div className="topBarEyebrow">SEA Farms Operations</div>
             <div className="topBarTitle">
-              {active === 'welcome' ? 'Aquaculture Command Centre' : activeItem.label}
+              {active === 'welcome' ? 'Aquaculture Operations Centre' : activeItem.label}
             </div>
           </div>
           <div className="topBarRight">
             <span className="topBarDate">{formatDate()}</span>
             <div className="topBarPill">
               <div className="topBarPillDot" />
-              All Systems Live
+              Farm Management
             </div>
             <button
               className="mobileMenuBtn"
@@ -207,11 +207,11 @@ function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
           <img className="heroLogoImg" src={seaLogo} alt="SEA Farms" />
           <div className="heroEyebrow">Commercial Aquaculture Management</div>
           <h2 className="heroHeadline">
-            Operate every pond with <em>clarity</em> and real-time control.
+            Operate every pond with <em>clarity</em> and disciplined control.
           </h2>
           <p className="heroBody">
-            SEA Farms brings daily farm operations into one structured platform — pond activity,
-            feeding, treatments, water quality, growth tracking and management reporting, all in one place.
+            SEA Farms brings daily farm operations into one structured management platform covering pond activity,
+            feeding, treatments, water quality, growth tracking, inventory and management reporting.
           </p>
           <div className="heroActions">
             <button className="btnPrimary" onClick={() => onNavigate('overview')}>
@@ -227,12 +227,12 @@ function WelcomePage({ onNavigate }: { onNavigate: (k: PageKey) => void }) {
           <div className="heroPanelBadge">
             <img src={seaSecondaryLogo} alt="" aria-hidden="true" />
           </div>
-          <div className="heroPanelTag">Nidadavolu · West Godavari · AP</div>
+          <div className="heroPanelTag">Nidadavolu · Andhra Pradesh</div>
           <div className="heroPanelTitle">
-            Freshwater L. vannamei<br />Biofloc System
+            Freshwater Vannamei<br />Farm Operations
           </div>
           <div className="heroPanelSub">
-            5 pond tanks · Precision aquaculture · Sustainable results
+            12 ponds · 34 acres · Precision aquaculture · Sustainable results
           </div>
         </div>
       </div>
@@ -271,12 +271,12 @@ function PlaceholderPage({ item }: { item: NavItem }) {
       <div className="placeholderInner">
         <div className="placeholderBadge" aria-hidden="true">{item.icon}</div>
         <h2>{item.label}</h2>
-        <p>{item.description} — this module is being built out as part of the SEA Farms platform.</p>
+        <p>{item.description} — this module will support structured business workflows within the SEA Farms platform.</p>
         <div className="placeholderBox">
-          <strong>Coming next</strong>
+          <strong>Module scope</strong>
           <span>
-            Structured workflows, record capture, approvals, AI insights and management-ready views
-            for this business area will be available in the next release.
+            Structured workflows, record capture, review controls, operational insights and management-ready views
+            will be available for this business area.
           </span>
         </div>
       </div>
